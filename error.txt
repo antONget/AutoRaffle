@@ -1,0 +1,44 @@
+Traceback (most recent call last):
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/middlewares/error.py", line 25, in __call__
+    return await handler(event, data)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/middlewares/user_context.py", line 56, in __call__
+    return await handler(event, data)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/fsm/middleware.py", line 42, in __call__
+    return await handler(event, data)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/event/telegram.py", line 121, in trigger
+    return await wrapped_inner(event, kwargs)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/dispatcher.py", line 276, in _listen_update
+    return await self.propagate_event(update_type=update_type, event=event, **kwargs)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/router.py", line 141, in _wrapped
+    return await self._propagate_event(
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/router.py", line 174, in _propagate_event
+    response = await router.propagate_event(update_type=update_type, event=event, **kwargs)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/router.py", line 146, in propagate_event
+    return await observer.wrap_outer_middleware(_wrapped, event=event, data=kwargs)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/router.py", line 141, in _wrapped
+    return await self._propagate_event(
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/router.py", line 166, in _propagate_event
+    response = await observer.trigger(event, **kwargs)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/event/telegram.py", line 113, in trigger
+    result, data = await handler.check(event, **kwargs)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/event/handler.py", line 94, in check
+    check = await event_filter.call(*args, **kwargs)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/dispatcher/event/handler.py", line 43, in call
+    return await wrapped()
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/filter/subscribe_channel.py", line 13, in __call__
+    u_status = await bot.get_chat_member(chat_id=config.tg_bot.channel_name, user_id=message.from_user.id)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/client/bot.py", line 1607, in get_chat_member
+    return await self(call, request_timeout=request_timeout)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/client/bot.py", line 453, in __call__
+    return await self.session(self, method, timeout=request_timeout)
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/client/session/base.py", line 254, in __call__
+    return cast(TelegramType, await middleware(bot, method))
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/client/session/aiohttp.py", line 185, in make_request
+    response = self.check_response(
+  File "/Users/antonponomarev/PycharmProjects/AutoRaffle/venv/lib/python3.10/site-packages/aiogram/client/session/base.py", line 120, in check_response
+    raise TelegramBadRequest(method=method, message=description)
+aiogram.exceptions.TelegramBadRequest: Telegram server says - Bad Request: member list is inaccessible
