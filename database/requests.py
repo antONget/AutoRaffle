@@ -77,3 +77,14 @@ async def get_list_prize() -> list[Prize]:
     async with async_session() as session:
         prizes = await session.scalars(select(Prize))
         return [prize for prize in prizes]
+
+
+async def get_prize(id_prize: int) -> Prize:
+    """
+    Добавление победителя
+    :param id_prize:
+    :return:
+    """
+    logging.info(f'get_prize')
+    async with async_session() as session:
+        return await session.scalar(select(Prize).where(Prize.id == id_prize))

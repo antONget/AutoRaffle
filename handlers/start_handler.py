@@ -8,7 +8,7 @@ from aiogram.fsm.state import State, StatesGroup
 
 from config_data.config import Config, load_config
 from database import requests as rq
-from database.models import User
+from database.models import User, Prize
 from utils.error_handling import error_handler
 from keyboards.start_keyboard import keyboard_start, keyboard_start_admin
 from filter.subscribe_channel import ChannelProtect
@@ -130,27 +130,30 @@ async def process_ruffle(message: Message, state: FSMContext, bot: Bot) -> None:
         if data.get('count_raffle'):
             count = data['count_raffle'] + 1
             if count == 4:
-                count = 1
+                await state.clear()
+                await message.answer(text='Все призы разыграны, поздравляю победителей!')
+                return
 
         await state.update_data(count_raffle=count)
-        raffle_user = ['1 й победитель айфон-@Maksim_Ipatov',
-                       '2 й победитель жигули- @Oleg_Maksimovichh',
-                       '3 й победитель бмв- @VVK0404']
+        # raffle_user = ['1 й победитель айфон-@Maksim_Ipatov',
+        #                '2 й победитель жигули- @Oleg_Maksimovichh',
+        #                '3 й победитель бмв- @VVK0404']
+        prize: Prize = await rq.get_prize(id_prize=count)
         msg = await message.answer(text='Уже ищу в журнале зарегистрированных победителя...')
         msg_ = await message.answer_sticker(
             sticker='CAACAgQAAxkBAAMhZ-lX90pMKhrirF-HzdWwxki6OecAAkkDAALN9cAEs75ahlKdplY2BA')
         await asyncio.sleep(3)
         await msg.delete()
         await msg_.delete()
-        await message.answer(text=f"""🎉🏆 Поздравляю победителя нашего розыгрыша автомобилей! 🚗✨
+        await message.answer(text=f"""🎉🏆 Поздравляю победителя нашего розыгрыша! ✨
     
-С радостью объявляю имя счастливчика, который стал обладателем автомобиля:
+С радостью объявляю имя счастливчика:
     
-    {raffle_user[count-1]}
+    {count}-й победитель {prize.name_prize}
     
 🥳 Спасибо всем участникам за участие! Не забудьте следить за нашими анонсами
     , ведь впереди еще много интересных розыгрышей и акций!
     
-🎊 Поздравляем еще раз! Успехов на дорогах! 🚘💨""")
+🎊 Поздравляем еще раз!""")
     else:
         await message.answer(text='Для объявления победителя мне нужно число')
