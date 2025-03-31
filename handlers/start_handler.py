@@ -2,7 +2,7 @@ import asyncio
 
 from aiogram import Router, F, Bot
 from aiogram.filters import CommandStart, StateFilter
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
@@ -59,7 +59,7 @@ async def process_start_command_user(message: Message, state: FSMContext, bot: B
     if await check_super_admin(telegram_id=message.from_user.id):
         await message.answer(text=f'Для участия в розыгрыше зарегистрировалось {len(list_users)} человек.\n '
                                   f'Для проведения розыгрыша нажмите кнопку "Провести розыгрыш"',
-                             reply_markup=keyboard_start())
+                             reply_markup=keyboard_start_admin())
     else:
         await message.answer_photo(
             photo='AgACAgIAAxkBAAMgZ-lXo13TR8TNLSK_tC2t2yTYoLIAAqnsMRuYcFFL3zh9Nt2n88QBAAMCAAN4AAM2BA',
@@ -72,31 +72,32 @@ async def process_start_command_user(message: Message, state: FSMContext, bot: B
                     f'2. Нажмите кнопку "Участвовать" ниже. 👇\n'
                     f'3. Следите за новостями и ждите розыгрыша! Он будет проводиться в прямом эфире.\n'
                     f'🔔 Не забудьте пригласить друзей!\n Пусть удача будет на вашей стороне!',
-            reply_markup=keyboard_start(count=len(list_users)))
+            reply_markup=keyboard_start(count=len(list_users)),
+            disable_web_page_preview=True)
 
 
 @router.callback_query(F.data == 'participate', ChannelProtect())
-@error_handler
-async def process_registaration(message: Message, state: FSMContext, bot: Bot) -> None:
+async def process_registaration(callback: CallbackQuery, state: FSMContext, bot: Bot) -> None:
     """
     Регистрация на розыгрыш
-    :param message:
+    :param callback:
     :param state:
     :param bot:
     :return:
     """
-    logging.info(f'process_registaration: {message.from_user.id}')
-    await message.answer(text="""📢 Дорогие участники!
+    logging.info(f'process_registaration: {callback.from_user.id}')
+    await callback.message.answer(text="📢 Дорогие участники!\n\n"
+                                       "Мы благодарим вас за участие в нашем конкурсе по розыгрышу!"
+                                       " Вам присвоен индивидуальный номер.\n\n"
+                                       "Ваше стремление вдохновляют нас,"
+                                       " и мы рады видеть такой широкий интерес к нашему мероприятию.\n"
+                                       "Каждый из вас стал важной частью этого захватывающего события!\n\n"
+                                       "Следите за обновлениями, ведь совсем скоро мы объявим победителя!"
+                                       " Удачи всем! 🍀")
+    await callback.answer()
 
-Мы благодарим вас за участие в нашем конкурсе по розыгрышу автомобиля! 🚗 Вам присвоен индивидуальный номер.
 
-Ваше стремление вдохновляют нас, и мы рады видеть такой широкий интерес к нашему мероприятию. 
-Каждый из вас стал важной частью этого захватывающего события!
-
-Следите за обновлениями, ведь совсем скоро мы объявим победителя! Удачи всем! 🍀""")
-
-
-@router.message(F.text == '🎉🏆 Провести розыгрыш 🚗✨', IsSuperAdmin())
+@router.message(F.text == 'Провести розыгрыш', IsSuperAdmin())
 @error_handler
 async def process_ruffle(message: Message, state: FSMContext, bot: Bot) -> None:
     """
@@ -145,15 +146,11 @@ async def process_ruffle(message: Message, state: FSMContext, bot: Bot) -> None:
         await asyncio.sleep(3)
         await msg.delete()
         await msg_.delete()
-        await message.answer(text=f"""🎉🏆 Поздравляю победителя нашего розыгрыша! ✨
-    
-С радостью объявляю имя счастливчика:
-    
-    {count}-й победитель {prize.name_prize}
-    
-🥳 Спасибо всем участникам за участие! Не забудьте следить за нашими анонсами
-    , ведь впереди еще много интересных розыгрышей и акций!
-    
-🎊 Поздравляем еще раз!""")
+        await message.answer(text=f"🎉🏆 Поздравляю победителя нашего розыгрыша! ✨\n\n"
+                                  f"С радостью объявляю имя счастливчика:\n\n"
+                                  f"   {count}-й победитель {prize.name_prize}\n\n"
+                                  f"🥳 Спасибо всем участникам за участие! Не забудьте следить за нашими анонсами,"
+                                  f" ведь впереди еще много интересных розыгрышей и акций!\n\n"
+                                  f"🎊 Поздравляем еще раз!")
     else:
         await message.answer(text='Для объявления победителя мне нужно число')

@@ -23,7 +23,7 @@ class PrizeState(StatesGroup):
     prize = State()
 
 
-@router.message('/add_raffle', IsSuperAdmin())
+@router.message(F.text == '/add_raffle', IsSuperAdmin())
 @error_handler
 async def process_add_raffle(message: Message, state: FSMContext, bot: Bot) -> None:
     """
@@ -36,6 +36,7 @@ async def process_add_raffle(message: Message, state: FSMContext, bot: Bot) -> N
     logging.info(f'process_add_raffle: {message.from_user.id}')
     await message.answer(text=f'Пришлите сведения для 1-го победителя,'
                               f' например: айфон-@Maksim_Ipatov')
+    await state.set_state(PrizeState.prize)
 
 
 @router.message(StateFilter(PrizeState.prize), IsSuperAdmin())
@@ -50,19 +51,20 @@ async def process_ruffle(message: Message, state: FSMContext, bot: Bot) -> None:
     """
     logging.info(f'process_ruffle: {message.from_user.id}')
     data = await state.get_data()
-    count_prize = 1
+    count_prize = 2
     if data.get('count_prize'):
         count_prize = data['count_prize'] + 1
         if count_prize == 4:
-            count_prize = 1
+            await rq.add_prize(count_prize=count_prize - 1, prize_str=message.text)
+            await state.clear()
             await state.update_data(count_prize=count_prize)
             list_prizes: list[Prize] = await rq.get_list_prize()
             text = 'Победители успешно добавлены:\n\n'
             for i, prize in enumerate(list_prizes):
                 text += f'{i+1}. {prize.name_prize}\n'
-                await message.answer(text=text)
+            await message.answer(text=text)
             return
-        await rq.add_prize(count_prize=count_prize, prize=message.text)
+    await rq.add_prize(count_prize=count_prize-1, prize_str=message.text)
     await state.update_data(count_prize=count_prize)
     await message.answer(text=f'Пришлите сведения для {count_prize}-го победителя,'
                               f' например: айфон-@Maksim_Ipatov')

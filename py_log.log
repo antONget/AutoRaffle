@@ -1,11 +1,7 @@
-auto_raffle_bot.py:28 #INFO     [2025-03-30 17:20:49,177] - __main__ - Starting bot
-notify_admins.py:13 #INFO     [2025-03-30 17:20:49,187] - root - on_startup_notify
-dispatcher.py:527 #INFO     [2025-03-30 17:20:49,682] - aiogram.dispatcher - Start polling
-dispatcher.py:341 #INFO     [2025-03-30 17:20:49,725] - aiogram.dispatcher - Run polling for bot @T_e_s_t_m_y_b_o_t_bot id=6689173506 - 'BOT_TestTest_1😍'
-dispatcher.py:219 #ERROR    [2025-03-30 17:20:53,844] - aiogram.dispatcher - Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
-dispatcher.py:221 #WARNING  [2025-03-30 17:20:53,844] - aiogram.dispatcher - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 6689173506)
-dispatcher.py:219 #ERROR    [2025-03-30 17:20:59,169] - aiogram.dispatcher - Failed to fetch updates - TelegramConflictError: Telegram server says - Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
-dispatcher.py:221 #WARNING  [2025-03-30 17:20:59,170] - aiogram.dispatcher - Sleep for 1.487340 seconds and try again... (tryings = 1, bot id = 6689173506)
-dispatcher.py:455 #WARNING  [2025-03-30 17:20:59,945] - aiogram.dispatcher - Received SIGINT signal
-dispatcher.py:359 #INFO     [2025-03-30 17:20:59,946] - aiogram.dispatcher - Polling stopped for bot @T_e_s_t_m_y_b_o_t_bot id=6689173506 - 'BOT_TestTest_1😍'
-dispatcher.py:554 #INFO     [2025-03-30 17:20:59,947] - aiogram.dispatcher - Polling stopped
+auto_raffle_bot.py:28 #INFO     [2025-03-31 17:00:05,292] - __main__ - Starting bot
+notify_admins.py:13 #INFO     [2025-03-31 17:00:05,297] - root - on_startup_notify
+dispatcher.py:527 #INFO     [2025-03-31 17:00:05,662] - aiogram.dispatcher - Start polling
+dispatcher.py:341 #INFO     [2025-03-31 17:00:05,709] - aiogram.dispatcher - Run polling for bot @RaffleOneBot id=7756574783 - 'Розыгрыш автомобиля'
+dispatcher.py:455 #WARNING  [2025-03-31 17:00:15,828] - aiogram.dispatcher - Received SIGINT signal
+dispatcher.py:359 #INFO     [2025-03-31 17:00:15,828] - aiogram.dispatcher - Polling stopped for bot @RaffleOneBot id=7756574783 - 'Розыгрыш автомобиля'
+dispatcher.py:554 #INFO     [2025-03-31 17:00:15,828] - aiogram.dispatcher - Polling stopped

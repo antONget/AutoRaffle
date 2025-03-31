@@ -50,21 +50,22 @@ async def get_list_users() -> list[User]:
 """PRIZE"""
 
 
-async def add_prize(count_prize: int, prize: str) -> None:
+async def add_prize(count_prize: int, prize_str: str) -> None:
     """
     Добавление победителя
     :param count_prize:
-    :param prize:
+    :param prize_str:
     :return:
     """
     logging.info(f'add_prize')
     async with async_session() as session:
         prize = await session.scalar(select(Prize).where(Prize.id == count_prize))
         if not prize:
-            session.add(Prize(**{"name_prize": prize}))
+            data = {"name_prize": prize_str}
+            session.add(Prize(**data))
             await session.commit()
         else:
-            prize.name_prize = prize
+            prize.name_prize = prize_str
             await session.commit()
 
 
