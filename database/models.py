@@ -15,9 +15,15 @@ class Base(AsyncAttrs, DeclarativeBase):
 
 class User(Base):
     __tablename__ = 'users'
-    tg_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    tg_id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     username: Mapped[str] = mapped_column(String, nullable=True)
     role: Mapped[str] = mapped_column(String, default='user')
+
+
+class Prize(Base):
+    __tablename__ = 'prizes'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name_prize: Mapped[str] = mapped_column(String, nullable=True)
 
 
 async def async_main():

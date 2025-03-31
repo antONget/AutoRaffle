@@ -55,22 +55,27 @@ async def process_start_command_user(message: Message, state: FSMContext, bot: B
         data_user = {"tg_id": message.from_user.id,
                      "username": username}
         await rq.add_user(data=data_user)
-    keyboard = keyboard_start()
+    list_users: list[User] = await rq.get_list_users()
     if await check_super_admin(telegram_id=message.from_user.id):
-        keyboard = keyboard_start_admin()
-    await message.answer_photo(photo='AgACAgIAAxkBAAMgZ-lXo13TR8TNLSK_tC2t2yTYoLIAAqnsMRuYcFFL3zh9Nt2n88QBAAMCAAN4AAM2BA',
-                               caption=f'🚗 Добро пожаловать в наш розыгрыш автомобиля! 🎉\n\n'
-                                       f'Здравствуйте! Мы рады видеть вас в нашем боте!'
-                                       f' Здесь у вас есть уникальная возможность выиграть шикарный автомобиль. 🌟\n\n'
-                                       f'Как участвовать:\n\n'
-                                       f'1. Подпишись на наш телеграм канал - {config.tg_bot.channel_name}\n'
-                                       f'2. Нажмите кнопку "🎁 Участвовать 🎁" ниже. 👇\n'
-                                       f'3. Следите за новостями и ждите розыгрыша!\n'
-                                       f'🔔 Не забудьте пригласить друзей! Удачи! Пусть удача будет на вашей стороне! 🍀',
-                               reply_markup=keyboard)
+        await message.answer(text=f'Для участия в розыгрыше зарегистрировалось {len(list_users)} человек.\n '
+                                  f'Для проведения розыгрыша нажмите кнопку "Провести розыгрыш"',
+                             reply_markup=keyboard_start())
+    else:
+        await message.answer_photo(
+            photo='AgACAgIAAxkBAAMgZ-lXo13TR8TNLSK_tC2t2yTYoLIAAqnsMRuYcFFL3zh9Nt2n88QBAAMCAAN4AAM2BA',
+            caption=f'Здравствуйте! Мы рады видеть вас в нашем боте!\n'
+                    f'Здесь у вас есть уникальная возможность выиграть шикарный автомобиль абсолютно бесплатно!\n\n'
+                    f'Для участия:\n'
+                    f'1. Подписаться на наши 2 канала:\n\n'
+                    f'<a href="https://t.me/+cL9DtBv-HcFmMGE6">➡️ ТАЧКИ С ЗАЗОРОМ</a>\n\n'
+                    f'<a href="https://t.me/+6yGTwfUvRuA4YmZi">➡️ АВТОЗОР🏎️🚀🛩️</a>\n\n'
+                    f'2. Нажмите кнопку "Участвовать" ниже. 👇\n'
+                    f'3. Следите за новостями и ждите розыгрыша! Он будет проводиться в прямом эфире.\n'
+                    f'🔔 Не забудьте пригласить друзей!\n Пусть удача будет на вашей стороне!',
+            reply_markup=keyboard_start(count=len(list_users)))
 
 
-@router.message(F.text == '🎁 Участвовать 🎁', ChannelProtect())
+@router.callback_query(F.data == 'participate', ChannelProtect())
 @error_handler
 async def process_registaration(message: Message, state: FSMContext, bot: Bot) -> None:
     """
@@ -83,7 +88,7 @@ async def process_registaration(message: Message, state: FSMContext, bot: Bot) -
     logging.info(f'process_registaration: {message.from_user.id}')
     await message.answer(text="""📢 Дорогие участники!
 
-Мы благодарим вас за участие в нашем конкурсе по розыгрышу автомобиля! 🚗
+Мы благодарим вас за участие в нашем конкурсе по розыгрышу автомобиля! 🚗 Вам присвоен индивидуальный номер.
 
 Ваше стремление вдохновляют нас, и мы рады видеть такой широкий интерес к нашему мероприятию. 
 Каждый из вас стал важной частью этого захватывающего события!
@@ -120,22 +125,24 @@ async def process_ruffle(message: Message, state: FSMContext, bot: Bot) -> None:
     if message.text.isdigit():
         await state.set_state(state=None)
         data = await state.get_data()
-        print(data)
+
         count = 1
         if data.get('count_raffle'):
             count = data['count_raffle'] + 1
             if count == 4:
                 count = 1
-        print(count)
+
         await state.update_data(count_raffle=count)
-        raffle_user = ['@ПОБЕДИТЕЛЬ_1 - 111111111', '@ПОБЕДИТЕЛЬ_2 - 22222222', '@ПОБЕДИТЕЛЬ_3 - 33333333']
+        raffle_user = ['1 й победитель айфон-@Maksim_Ipatov',
+                       '2 й победитель жигули- @Oleg_Maksimovichh',
+                       '3 й победитель бмв- @VVK0404']
         msg = await message.answer(text='Уже ищу в журнале зарегистрированных победителя...')
         msg_ = await message.answer_sticker(
             sticker='CAACAgQAAxkBAAMhZ-lX90pMKhrirF-HzdWwxki6OecAAkkDAALN9cAEs75ahlKdplY2BA')
         await asyncio.sleep(3)
         await msg.delete()
         await msg_.delete()
-        await message.answer(text=f"""🎉🏆 Поздравляем победителя нашего розыгрыша автомобилей! 🚗✨
+        await message.answer(text=f"""🎉🏆 Поздравляю победителя нашего розыгрыша автомобилей! 🚗✨
     
 С радостью объявляю имя счастливчика, который стал обладателем автомобиля:
     

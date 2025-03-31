@@ -6,7 +6,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from config_data.config import Config, load_config
-from handlers import other_handlers, start_handler, error
+from handlers import other_handlers, start_handler, error, handler_prize
 from database.models import async_main
 from notify_admins import on_startup_notify
 
@@ -34,7 +34,8 @@ async def main():
     bot = Bot(token=config.tg_bot.token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher()
     await on_startup_notify(bot=bot)
-    dp.include_router(error.router)
+    dp.include_routers(error.router,
+                       handler_prize.router)
     dp.include_router(start_handler.router)
     dp.include_router(other_handlers.router)
 
