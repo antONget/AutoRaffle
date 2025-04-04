@@ -1,7 +1,7 @@
 import asyncio
 
 from aiogram import Router, F, Bot
-from aiogram.filters import CommandStart, StateFilter
+from aiogram.filters import CommandStart, StateFilter, CommandObject
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
@@ -14,6 +14,10 @@ from keyboards.start_keyboard import keyboard_start, keyboard_start_admin
 from filter.subscribe_channel import ChannelProtect
 from filter.admin_filter import check_super_admin, IsSuperAdmin
 
+from aiogram.filters import CommandStart, CommandObject
+
+from aiogram.utils.deep_linking import decode_payload, create_start_link
+
 import logging
 
 router = Router()
@@ -24,13 +28,18 @@ class NumRaffle(StatesGroup):
     number = State()
 
 
+async def mt_referal_menu(message: Message, state: FSMContext, bot: Bot):
+    link = await create_start_link(bot, str(message.from_user.id), encode=True)
+
+
 @router.message(CommandStart())
 @error_handler
-async def process_start_command_user(message: Message, state: FSMContext, bot: Bot) -> None:
+async def process_start_command_user(message: Message, state: FSMContext, command: CommandObject, bot: Bot) -> None:
     """
     Обработки запуска бота или ввода команды /start
     :param message:
     :param state:
+    :param command:
     :param bot:
     :return:
     """
@@ -68,7 +77,7 @@ async def process_start_command_user(message: Message, state: FSMContext, bot: B
                     f'Для участия:\n'
                     f'1. Подписаться на наши 2 канала:\n\n'
                     f'<a href="https://t.me/+cL9DtBv-HcFmMGE6">➡️ ТАЧКИ С ЗАЗОРОМ</a>\n\n'
-                    f'<a href="https://t.me/+6yGTwfUvRuA4YmZi">➡️ АВТОЗОР🏎️🚀🛩️</a>\n\n'
+                    f'<a href="https://t.me/+adzIN-JccIU3ZDdi">➡️ АВТОЗОР🏎️🚀🛩️</a>\n\n'
                     f'2. Нажмите кнопку "Участвовать" ниже. 👇\n'
                     f'3. Следите за новостями и ждите розыгрыша! Он будет проводиться в прямом эфире.\n'
                     f'🔔 Не забудьте пригласить друзей!\n Пусть удача будет на вашей стороне!',

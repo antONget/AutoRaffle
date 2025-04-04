@@ -24,14 +24,14 @@ class ChannelProtect(Filter):
             await message.message.answer(
                 text=f'Чтобы участвовать в розыгрыше, обязательное условие  подписка на каналы:\n\n'
                      f'<a href="https://t.me/+cL9DtBv-HcFmMGE6">➡️ ТАЧКИ С ЗАЗОРОМ</a>\n'
-                     f'<a href="https://t.me/+6yGTwfUvRuA4YmZi">➡️ АВТОЗОР🏎️🚀🛩️</a>\n',
+                     f'<a href="https://t.me/+adzIN-JccIU3ZDdi">➡️ АВТОЗОР🏎️🚀🛩️</a>\n',
                 reply_markup=keyboard_start(count=len(list_users)),
                 parse_mode='html',
                 disable_web_page_preview=True)
         else:
-            await message.answer(text=f'Чтобы участвовать в розыгрыше, обязательное условие  подписка на канал '
-                                      f' вакансию своей мечты подпишись на канал '
-                                      f'<a href="{config.tg_bot.channel_name}">{config.tg_bot.channel_name}</a>',
+            await message.answer(text=f'Чтобы участвовать в розыгрыше, обязательное условие  подписка на каналы:\n\n'
+                                      f'<a href="https://t.me/+cL9DtBv-HcFmMGE6">➡️ ТАЧКИ С ЗАЗОРОМ</a>\n'
+                                      f'<a href="https://t.me/+adzIN-JccIU3ZDdi">➡️ АВТОЗОР🏎️🚀🛩️</a>\n',
                                  reply_markup=keyboard_start(count=len(list_users)),
                                  parse_mode='html',
                                  disable_web_page_preview=True)
