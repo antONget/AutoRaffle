@@ -23,14 +23,14 @@ class ChannelProtect(Filter):
             await message.answer('')
             await message.message.answer(
                 text=f'Чтобы участвовать в розыгрыше, обязательное условие  подписка на каналы:\n\n'
-                     f'<a href="https://t.me/+cL9DtBv-HcFmMGE6">➡️ ТАЧКИ С ЗАЗОРОМ</a>\n'
+                     f'<a href="https://t.me/tachki_s_zazorom">➡️ ТАЧКИ С ЗАЗОРОМ</a>\n'
                      f'<a href="https://t.me/+adzIN-JccIU3ZDdi">➡️ АВТОЗОР🏎️🚀🛩️</a>\n',
                 reply_markup=keyboard_start(count=len(list_users)),
                 parse_mode='html',
                 disable_web_page_preview=True)
         else:
             await message.answer(text=f'Чтобы участвовать в розыгрыше, обязательное условие  подписка на каналы:\n\n'
-                                      f'<a href="https://t.me/+cL9DtBv-HcFmMGE6">➡️ ТАЧКИ С ЗАЗОРОМ</a>\n'
+                                      f'<a href="https://t.me/tachki_s_zazorom">➡️ ТАЧКИ С ЗАЗОРОМ</a>\n'
                                       f'<a href="https://t.me/+adzIN-JccIU3ZDdi">➡️ АВТОЗОР🏎️🚀🛩️</a>\n',
                                  reply_markup=keyboard_start(count=len(list_users)),
                                  parse_mode='html',
