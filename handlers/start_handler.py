@@ -71,7 +71,7 @@ async def process_start_command_user(message: Message, state: FSMContext, comman
                              reply_markup=keyboard_start_admin())
     else:
         await message.answer_photo(
-            photo='AgACAgIAAxkBAAMgZ-lXo13TR8TNLSK_tC2t2yTYoLIAAqnsMRuYcFFL3zh9Nt2n88QBAAMCAAN4AAM2BA',
+            photo='AgACAgIAAxkBAAICh2f2R8VbTETZF2fZdHOrPm-kVvvZAAK05jEbe6WwS5clpEqu2-_iAQADAgADeQADNgQ',
             caption=f'Здравствуйте! Мы рады видеть вас в нашем боте!\n'
                     f'Здесь у вас есть уникальная возможность выиграть шикарный автомобиль абсолютно бесплатно!\n\n'
                     f'Для участия:\n'
