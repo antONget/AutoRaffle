@@ -95,6 +95,7 @@ async def process_registaration(callback: CallbackQuery, state: FSMContext, bot:
     :return:
     """
     logging.info(f'process_registaration: {callback.from_user.id}')
+    await callback.message.edit_reply_markup(reply_markup=None)
     await callback.message.answer(text="📢 Дорогие участники!\n\n"
                                        "Мы благодарим вас за участие в нашем конкурсе по розыгрышу!"
                                        " Вам присвоен индивидуальный номер.\n\n"
