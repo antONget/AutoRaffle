@@ -13,6 +13,7 @@ from utils.error_handling import error_handler
 from keyboards.start_keyboard import keyboard_start, keyboard_start_admin
 from filter.subscribe_channel import ChannelProtect
 from filter.admin_filter import check_super_admin, IsSuperAdmin
+from filter.stop_raffle import StopRaffel
 
 from aiogram.filters import CommandStart, CommandObject
 
@@ -32,7 +33,7 @@ async def mt_referal_menu(message: Message, state: FSMContext, bot: Bot):
     link = await create_start_link(bot, str(message.from_user.id), encode=True)
 
 
-@router.message(CommandStart())
+@router.message(CommandStart(), StopRaffel())
 @error_handler
 async def process_start_command_user(message: Message, state: FSMContext, command: CommandObject, bot: Bot) -> None:
     """
@@ -85,7 +86,7 @@ async def process_start_command_user(message: Message, state: FSMContext, comman
             disable_web_page_preview=True)
 
 
-@router.callback_query(F.data == 'participate', ChannelProtect())
+@router.callback_query(F.data == 'participate', ChannelProtect(), StopRaffel())
 async def process_registaration(callback: CallbackQuery, state: FSMContext, bot: Bot) -> None:
     """
     Регистрация на розыгрыш
